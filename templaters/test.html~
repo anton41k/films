@@ -1,0 +1,19 @@
+{%load staticfiles%}
+     <table class="genre1">	
+	<tr><td> <a href="/" class="push_button blue">Категории:</a>
+	</td></tr>
+	<tr><td>
+<table class="genre">
+{%for genre in genres %}
+
+	<tr><td>
+	<img src="{%static "img/sm_arr1.gif.png"%}"/><a href="/genre/{{genre.pk}}/" class="push_button2 blue2">
+	&nbsp;&nbsp;&nbsp;{{genre}}</a>
+	</td></tr>
+		
+	{%endfor%}
+</table>
+	<tr><td>
+	<a class="push_button1 blue1"></a>
+	</td></tr>	
+     </table>

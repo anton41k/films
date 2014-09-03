@@ -1,0 +1,15 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+{%block content_center%}
+{%load staticfiles%}
+
+<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+<div class="text">Вы уверены, что хотите удалить 
+<a class="del_film" href="/{{del_film.pk}}/">
+<b>Фильм {{del_film.name}} ({{del_film.date}}) {{del_film.quality}}</b></a> ?
+<br/> Все следующие объекты и связанные с ними элементы будут удалены!!!</div><br/>
+<a class="redact_film_sms" href="/del_add_film/{{del_film.pk}}/"><input type="button" value="Удалить раздачу"></a>
+<a class="redact_film_sms" href="{{url}}"><input type="button" value="Назад"></a>
+<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+
+{%endblock%}

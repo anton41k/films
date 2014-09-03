@@ -1,0 +1,45 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+<div class="menu_sms">
+	||<a href="/user/sms/"> Входящие сообщения</a> || 
+	<a href="/user/sms_sends/">Отправленные сообщения</a> || 
+	<a href="/user/{{user.pk}}/sms/">Отправить сообщение</a> ||
+</div><br>
+ghf
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<table class="coment_autor">
+    <tr>  
+	<td>
+		&nbsp;&nbsp;отправлено: 
+		<a href="/user/{{sms_users.received.pk}}/">{{sms_users.received}}</a>
+		 ({{sms_users.date_sms}})
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td>
+	{%for adduser in add_user%}
+		{%ifequal adduser.add sms_users.received%}
+	 		<img src="{{adduser.avatar.url}}" />
+		{%endifequal%}
+	{%endfor%}</td>
+	<td class="coment_sms_td">{{sms_users.sms}}</td>
+    </tr>
+</table>
+<table class="coment_autor" >
+    <tr>
+	<td>Дата регистрации: {{sms_users.received.date_joined}}</td>
+	<td class="menu_sms_red"><a href="/user/{{sms_users.pk}}/{{sms_users.sender.pk}}/del_sms"> Удалить</a></td>
+    </tr>
+</table>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+{%endblock%}

@@ -1,0 +1,51 @@
+{%extends "base.html"%}
+{%block title%}Фильмы{%endblock%}
+{%load staticfiles%}
+{%block content_center%}
+
+
+{%for film in films%}
+<div class="name_film_download">
+	<a href="/{{film.pk}}/">скачать фильм {{film.name}} ({{film.date}}) {{film.quality}} бесплатно</a><br>
+</div>
+<div class="category_small">
+	Категория:&nbsp;<a href="/">Главная,</a>&nbsp;
+{%for i in film.genre.all%}
+	<a href="/genre/{{i.pk}}/">{{i.name_genre}}</a>,&nbsp;
+{%endfor%}
+	| Просмотров: {{film.count}}
+</div>
+	<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+
+<div class="img1">
+	<img src="{{film.poster.url}}" />
+</div><br>
+<div class="detail_film">
+	<b>Фильм: </b>{{film.name}}<br>
+	<b>Оригинальное название: </b>{{film.orig_name}}<br>
+	<b>Год выхода: </b>{{film.date}}<br>
+	<b>Жанр: </b>
+ {%for i in film.genre.all%}{{i.name_genre}}&nbsp;{%endfor%}<br>
+	<b>Режиссер: </b>{{film.producer}}<br>
+	<b>В ролях: </b>{{film.cast}}<br>
+	<b>Продолжительность: </b>{{film.duration}}<br>
+	<b>Перевод: </b>{{film.translation}}<br>
+	<b>Качество: </b>{{film.quality}}<br>
+	<b>Размер: </b>{{film.size}}<br>
+	<b>О фильме: </b>{{film.detail}}<br>
+</div>
+<table class="line">
+	<tr><td background="{%static "img/line.gif"%}">
+	</td></tr>
+</table>
+<table class="time">
+	<tr><td>
+		&nbsp;<b>{{film.date_film|date:"j F Y"}}</b> | автор: <a href="/user/{{film.autor.pk}}">{{film.autor}}</a> | Просмотров: {{film.count}} | Комментариев: {{film.coments_set.count}} | <a href="/{{film.pk}}/">ПОДРОБНЕЕ...</a>
+	</td></tr>
+</table>
+{%endfor%}
+{%endblock%}
+
+
+
+

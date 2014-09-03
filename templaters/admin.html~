@@ -1,0 +1,85 @@
+{%load staticfiles%}
+<table class="login_head">
+	<tr><td class="login login_top">Админка
+	</td></tr>
+	<tr><td>
+		<table class="hellow">
+			<tr><td>
+				Привет, <b>{{user.username}}</b>!</td></tr>
+			<tr><td>
+				<table class="hellow_user">
+					<tr><td>	
+						<img align="right" src="{%static "img/add.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/addfilm/">Добавить фильм</a>
+					</td></tr>
+					<tr><td>	
+						<img align="right" src="{%static "img/sm_arr1.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/user/{{user.pk}}/">Мой профиль</a>
+					</td></tr>
+					<tr><td>	
+						<img align="right" src="{%static "img/sm_arr1.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/movies/check/">Мои раздачи({{count_films_user}}|{{check_count_films_user}})</a>
+					</td></tr>
+{%if user.is_superuser%}
+					<tr><td>	
+						<img align="right" src="{%static "img/sm_arr1.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/new/movies/check/">Новые раздачи({{check_film}})</a>
+					</td></tr>
+{%endif%}
+					<tr><td>
+						<img align="right" src="{%static "img/sm_arr1.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/user/sms/">Cообщения ({{new_sms_count}}|{{sms_count}})</a>
+					</td></tr>
+					<tr><td>
+						<img align="right" src="{%static "img/sm_arr1.gif"%}" /></td>
+					<td>
+						&nbsp;<a href="/user/{{user.pk}}/coments/">Мои коментарии ({{coment_count}})</a>
+					</td></tr>
+				</table>
+			</td></tr>
+			<tr><td>
+				<a href="/logout/"><b>Выйти</b></a>
+			</td></tr>
+		</table>
+{%else%}
+		<form action="/" method="POST">    {% csrf_token %}
+		<table class="log_pas">
+			<tr><td colspan="2">
+		{%for error in form_log.username.errors %}
+			<a>{{error}}</a>
+		{%endfor%}
+			</td></tr>
+			<tr><td>Логин или e-mail</td>
+			<td>{{form_log.username}}</td></tr>
+			<tr><td colspan="2">
+		{%for error in form_log.password.errors %}
+			<a>{{error}}</a>
+		{%endfor%}
+			</td></tr>
+			<tr><td>Пароль</td>
+			<td>{{form_log.password}}</td></tr>
+			<tr><td colspan="2">
+				<table align="right" class="submit">
+					<tr><td>
+						<input type="submit"  value="Войти"/></form></td>
+					<td>
+						<form><input type="submit" formaction="/register/" value="Регистрация"/></form>
+					</td></tr>
+				</table>
+			</td></tr>
+		</table>
+{%endif%}
+	</td></tr>
+	<tr><td>
+		<a class="login1 login_bottom"></a>
+	</td></tr>
+</table>
+
+
+
+  

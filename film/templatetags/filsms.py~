@@ -1,0 +1,42 @@
+from django import template
+from film.models import *
+from django.db.models import Q
+import datetime
+from django.http import HttpResponseRedirect, HttpResponse
+register=template.Library()
+
+@register.filter
+def filtrsms(value,arg):
+	return value.received.filter(lable=arg).count()
+
+@register.filter
+def filfloat(value):
+	return float(value)
+
+
+@register.filter
+def user_rating_film(value,arg):
+	try:
+		film=Films.objects.get(pk=value)
+		user_rating_film=Rating.objects.filter(film=film,user_rating=arg)
+	except Films.DoesNotExist:
+		pass
+	return user_rating_film
+
+@register.filter
+def user_avatar(value):
+	user=AddUser.objects.get(add=value)
+	return user.avatar.url
+
+@register.filter
+def user_online(value):
+	now= datetime.datetime.now()
+	delta=datetime.timedelta(seconds=-300)
+	user=AddUser.objects.filter(Q(add=value)&Q(lastlogin__gt=now+delta))
+	return user
+
+
+
+
+
+	

@@ -1,0 +1,80 @@
+{%load filsms%}
+<a onMouseOver="rating({{film.orig_name}},{{film.pk}})">
+<div  id="{{film.orig_name}}" >
+{%if zsums|filfloat < 1.5 and zsums|filfloat > 0%}
+<div class="rating1">
+    <input/><label></label>
+</div>
+<div class="rating2">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+{%elif 0 == zsums|filfloat%}
+<div class="rating2">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+{%elif 1.5 <= zsums|filfloat and zsums|filfloat < 2.5%}
+<div class="rating1">
+    <input/><label></label>
+    <input/><label></label>
+</div>
+<div class="rating2">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+{%elif 2.5 <= zsums|filfloat and zsums|filfloat < 3.5%}
+<div class="rating1">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+<div class="rating2">
+    <input/><label></label>
+    <input/><label></label>
+</div>
+{%elif 3.5 <= zsums|filfloat and zsums|filfloat < 4.5%}
+<div class="rating1">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+<div class="rating2">
+    <input/><label></label>
+</div>
+{%elif 4.5 <= zsums|filfloat%}
+<div class="rating1">
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+    <input/><label></label>
+</div>
+{%endif%}
+</div>
+</a>
+{%if not user_rating_film%}
+<a onMouseOut="ratingout({{film.pk}},{{film.orig_name}})">
+<div id={{film.pk}} hidden>
+<form action="/{{film.pk}}/" method="POST">    {% csrf_token %}
+
+<div class="rating">
+    <input onchange="this.form.submit()" type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Отлично!">5 stars</label>
+    <input onchange="this.form.submit()" type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Хорошо!">4 stars</label>
+    <input onchange="this.form.submit()" type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Так себе!">3 stars</label>
+    <input onchange="this.form.submit()" type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Плохо!">2 stars</label>
+    <input onchange="this.form.submit()" type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Отстой!">1 star</label>
+</div>
+
+
+</form>
+</div>
+</a>
+{%endif%}

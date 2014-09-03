@@ -1,0 +1,12 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+<div class="menu_sms">
+	||<a href="/user/sms/"> Входящие сообщения</a> || 
+	<a href="/user/sms_sends/">Отправленные сообщения</a> || 
+	<a href="/user/{{user.pk}}/sms/">Отправить сообщение</a> ||
+</div><br>
+<div class="send_sms">Ваше сообщение было успешно отправлено. <a href="/user/{{user.pk}}/sms/">Отправить еще</a> или <a href="/user/{{user.pk}}/">вернуться в профиль</a></div>
+{%endblock%}

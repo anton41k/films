@@ -1,0 +1,27 @@
+{%load staticfiles%}
+<table class="genre_head">	
+	<tr><td class="push_button top">Категории</a>
+	</td></tr>
+	<tr><td>
+		<table class="genre_border">
+			<tr><td>
+			<table class="genre">
+				<tr><td>
+					<a  onclick=ajax_film_all()  class="push_button2 center2" >
+					<img src="{%static "img/sm_arr1gif.png"%}"/>
+					&nbsp;Главная</a>
+				</td></tr>
+			{%for genre in genres %}
+				<tr><td>
+					<a  onclick=ajax_film("genre","{{genre.pk}}") class="push_button2 center2" >
+					<img src="{%static "img/sm_arr1gif.png"%}"/>
+					&nbsp;{{genre}}</a>
+				</td></tr>	
+				{%endfor%}
+			</table>
+			</td></tr>
+		</table>
+	<tr><td>
+	<a class="push_button1 bottom1"></a>
+	</td></tr>	
+</table>

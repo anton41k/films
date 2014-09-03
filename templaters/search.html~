@@ -1,0 +1,51 @@
+
+{%load staticfiles%}
+
+
+<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+<form action="/search/" metod="get">{% csrf_token %}
+<table>
+	<tr>
+		<td rowspan="2">
+			<img title="Расширеный поиск" width="100" src="{%static "img/search3.png"%}"/></td>
+		<td colspan="2" height="50" valign="bottom">
+			<div class="text_search">Слово или фраза для поиска (Не обязательно. Можно использовать фильтры без поискового запроса)</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>{{form_advanced_search}}</table>
+		</td>
+		<td valign="top">
+			<input  title="Поиск" type="submit" value="Искать"/>
+		</td>
+	</tr>
+</table>
+<table class="advanced_search">
+    <tr>
+{% for field in form_seaech %}
+
+		<td>{{ field.label_tag }}
+			{{ field }}
+		</td>
+{% endfor %}
+	</tr>
+</table>
+</form>
+
+<br>
+<div class="text"><font size="1">
+{%if allfilm%}
+По Вашему запросу найдено {{allfilm|length}} {{allfilm|length|pluralize:"совпадение:,совпадения:"}}
+{%else%}
+К сожалению, поиск по сайту не дал никаких результатов. Попробуйте изменить или сократить Ваш запрос.
+{%endif%}
+</font></div>
+<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+
+{%include 'filter.html'%}
+
+
+
+
+

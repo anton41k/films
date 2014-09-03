@@ -1,0 +1,8 @@
+.field td{
+	height: 33px;
+        width: 100px;
+	padding: 0;
+}
+.field a{
+	color:white;
+}

@@ -1,0 +1,29 @@
+from django import template
+from students.models import Students,Groups,Subjects,Marks
+from datetime import *
+register=template.Library()
+
+@register.filter(name='filtrmark')
+def filtrmark(value,arg):
+	s=Subjects.objects.get(pk=arg)
+	return value.marks_set.filter(subject_mark=s)
+
+
+@register.filter(name='filtrmarkdate')
+def filtrmarkdate(value,arg):
+	s=Subjects.objects.get(pk=arg)
+	p=Marks.objects.filter(stud_mark__name__exact=value,subject_mark__subject__exact=s.subject)
+	dat=[]
+	for i in p:
+		l=i.data_mark
+		z=datetime.strftime(l,'%d')
+		dat.append(z)
+	return dat
+
+@register.filter(name='fil')
+def fil(value,arg):
+	s=Subjects.objects.get(pk=arg)
+	p=Marks.objects.filter(stud_mark__name__exact=stud[4],subject_mark__subject__exact=s,data_mark='2014-02-10')
+	return p
+
+

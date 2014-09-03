@@ -1,0 +1,24 @@
+
+{%load staticfiles%}
+<table class="login_head">
+	<tr>
+		<td class="login login_top">
+			Поиск
+		</td>
+	</tr>
+	<tr><td>
+		<table class="hellow">
+			<tr>
+			<form id="seach_base" action="" metod="get">{% csrf_token %}
+			<td><input id="q1" type="text" name="search_1" size="15" value="{{search}}"/></td>
+			<td><input title="Поиск" type="image" onclick="ajax_all('search','seach_base','ajax')" width="20" src="{%static "img/sb.png"%}"/>
+			</td></form>
+			</tr>
+			<tr><td colspan="2">
+					<a title="Расширеный поиск" onclick="ajax_film1('search')">+ Расширеный поиск</a></td>
+			</tr>
+		</table>
+	<tr><td colspan="6">
+		<a class="login1 login_bottom"></a>
+	</td></tr>
+</table>

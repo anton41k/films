@@ -1,0 +1,46 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+{%load filsms%}
+<div class="menu_sms">
+	||<a href="/user/sms/"> Входящие сообщения</a> || 
+	<a href="/user/sms_sends/">Отправленные сообщения</a> || 
+	<a href="/user/{{user.pk}}/sms/">Отправить сообщение</a> ||
+</div><br>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<table class="coment_autor">
+    <tr>  
+	<td>
+		&nbsp;&nbsp;написал: 
+		<a href="/user/{{sms_new.sender.pk}}/">{{sms_new.sender}}</a>
+		 ({{sms_new.date_sms}})&nbsp;&nbsp;
+		{%if sms_new.sender|user_online%}
+		<font color="#B91313">Онлайн</font>
+		{%endif%}
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td>
+	{%for adduser in add_user%}
+		{%ifequal adduser.add sms_new.sender%}
+	 		<img src="{{adduser.avatar.url}}" />
+		{%endifequal%}
+	{%endfor%}</td>
+	<td class="coment_sms_td">{{sms_new.sms|escape}}</td>
+    </tr>
+</table>
+<table class="coment_autor">
+    <tr>
+	<td>Дата регистрации: {{sms_new.sender.date_joined}}</td>
+	<td class="menu_sms"><a href="/user/{{user.pk}}/{{sms_new.sender.pk}}/{{sms_new.pk}}/sms/"> Ответить</a></td>
+	<td class="menu_sms_red"><a href="/user/{{sms_new.pk}}/{{sms_new.received.pk}}/new_sms"> Удалить</a></td>
+    </tr>
+</table>
+
+{%endblock%}

@@ -1,0 +1,10 @@
+from django import template
+from students.models import *
+
+register=template.Library()
+
+@register.filter
+def filtrsms(value,arg):
+	return value.received.filter(lable=arg).count()
+
+

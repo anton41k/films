@@ -1,0 +1,186 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+{%load staticfiles%}
+{%block content_center%}
+
+<form action="" enctype="multipart/form-data" method="post">
+<div class="text"><b>Добавить фильм</b><hr size="1"></div>
+<div id="help_text"><font color="#ed634f">Ваша раздача будет опубликована после ее проверки администрацией!!!<br/>(Все поля обязательны!!!)</font></div>
+<table class="addfilm">
+{% for field in form_film %}
+{%if 'Проверено' in field.label_tag and user.is_superuser%}
+<tr><th>{{ field.label_tag }}:</th>
+<td>{{ field }}</td></tr>
+{%elif 'Количество просмотров' in field.label_tag and user.is_superuser%}
+<tr><th>{{ field.label_tag }}:</th>
+<td>{{ field }}</td></tr>
+{%elif 'Проверено' not in field.label_tag and 'Количество просмотров' not in field.label_tag%}
+    <tr>
+		<th>{{ field.label_tag }}:</th>
+		<td>
+			<table>
+				<tr>
+					<td>{%for error in field.errors %}
+							<a>{{error}}</a>
+						{%endfor%}
+					</td>
+					<td id="help_text" rowspan="2">	
+						{{field.help_text}}
+					</td>
+				</tr>
+				<tr>
+					<td>{{ field }}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+{%endif%}
+{% endfor %}
+	<tr>
+		<th><lable for="id_formset">Скрины:</lable></th>
+		<td>
+		<table>{{ formset.management_form }}
+		{% for form in formset.forms %}
+        		{% for field in form %}
+            			<tr><td>{{field}}<a>{{field.errors}}</a></td></tr>
+        		{% endfor %}
+		     {% endfor %}
+		</table>
+		</td>
+		</div>
+	</tr>
+</table>
+
+{% csrf_token %}
+<p><input type="submit" name="n" value="Сохранить">
+<input type="reset"></p>
+</form>
+{%if user.is_superuser and add_film%}
+<a class="redact_film_sms" href="/del_add_film/{{add_film.pk}}/"><input type="button" value="Удалить раздачу"></a>
+{%endif%}<br/>
+{%if user.is_superuser and not add_film.check_film and add_film%}
+<a class="redact_film_sms" target="_blank" href="/user/{{user.pk}}/sms/{{add_film.autor.pk}}/{{add_film.pk}}/">Отправить сообщение автору</a>
+{%endif%}
+{%endblock%}
+
+
+
+
+
+
+{{form_film}}{{form_film.errors}}
+    {% for form in formset %}
+        {% for field in form %}
+            {{ field }}<br>
+        {% endfor %}
+    {% endfor %}
+
+	<tr>
+		<th><lable for="id_name">Фильм:</lable></th>
+		<td>{{form_film.name}}
+			{%for error in form_film.name.errors %}
+			<a>{{error}}</a>
+			{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_orig_name">Оригинальное название:</lable></th>
+		<td>{{form_film.orig_name}}
+		{%for error in form_film.orig_name.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_date">Год выхода:</lable></th>
+		<td>{{form_film.date}}
+		{%for error in form_film.date.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_poster">Постер:</lable></th>
+		<td>{{form_film.poster}}
+		{%for error in form_film.poster.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_genre">Жанр:</lable></th>
+		<td>
+		<table><tr>
+			<td>{{form_film.genre}}</td>
+			<td id="help_text">{{form_film.genre.help_text}}<br>
+			{%for error in form_film.genre.errors %}
+				<a>{{error}}</a>
+			{%endfor%}</td>
+		</tr></table>
+		</td>
+	</tr>
+	<tr>
+		<th><lable for="id_producer">Режисер:</lable></th>
+		<td>{{form_film.producer}}
+		{%for error in form_film.producer.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_cast">В ролях:</lable></th>
+		<td>{{form_film.cast}}
+		{%for error in form_film.cast.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_duration">Продолжительность:</lable></th>
+		<td>{{form_film.duration}}
+		{%for error in form_film.duration.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_translation">Перевод:</lable></th>
+		<td>{{form_film.translation}}
+		{%for error in form_film.translation.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_quality">Качество:</lable></th>
+		<td>{{form_film.quality}}
+		{%for error in form_film.quality.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_size">Размер:</lable></th>
+		<td>{{form_film.size}}
+		{%for error in form_film.size.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_detail">Описание:</lable></th>
+		<td>{{form_film.detail}}
+		{%for error in form_film.detail.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+	<tr>
+		<th><lable for="id_formset">Скрины:</lable></th>
+		<td>{{ formset.management_form }}
+		{% for form in formset.forms %}
+        		{% for field in form %}
+            			{{field}}<a>{{field.errors}}</a>
+        		{% endfor %}
+		     {% endfor %}
+
+		</td>
+		</div>
+	</tr>
+	<tr>
+		<th><lable for="id_down_load">Скачать:</lable></th>
+		<td>{{form_film.down_load}}
+		{%for error in form_film.down_load.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+	</tr>
+

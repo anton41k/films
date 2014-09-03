@@ -1,0 +1,140 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+
+<div class="menu_sms">
+<table  align="center">
+	<tr><td>
+		||<a href="/user/sms/"> Входящие сообщения</a> ||</td>
+	<td>
+		<a href="/user/sms_sends/">Отправленные сообщения</a> || </td>
+	<td>
+		<a href="/user/{{user.pk}}/sms/">Отправить сообщение</a> ||
+	</td></tr>
+	<tr><td colspan="3" class="menu_sms1">
+		<a onclick="inbox()"> Входящие сообщения</a> <br> 
+		<a onclick="sent()">Отправленные сообщения</a> <br>
+		<a onclick="send()"> Отправить сообщение</a> 
+	</td></tr>
+</table>
+</div>
+<div id="inbox" hidden>
+	{%for inbox in sms_users%}
+	{%ifequal inbox.received user%}
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+{%load filsms%}
+<table class="coment_autor">
+    <tr>  
+	<td>
+		&nbsp;написал: 
+		<a href="/user/{{inbox.sender.pk}}/">{{inbox.sender}}</a>
+		 ({{inbox.date_sms}})&nbsp;&nbsp;
+		{%if inbox.sender|user_online%}
+		<font color="#B91313">Онлайн</font>
+		{%endif%}
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td>
+	{%for adduser in add_user%}
+		{%ifequal adduser.add inbox.sender%}
+	 		<img src="{{adduser.avatar.url}}" />
+		{%endifequal%}
+	{%endfor%}</td>
+	<td class="coment_sms_td">{{inbox.sms}}</td>
+    </tr>
+</table>
+<table class="coment_autor">
+    <tr>
+	<td>Дата регистрации: {{inbox.sender.date_joined}}</td>
+	<td class="menu_sms"><a href="/user/{{user.pk}}/{{inbox.sender.pk}}/{{inbox.pk}}/sms/"> Ответить</a></td>
+	<td class="menu_sms_red"><a href="/user/{{inbox.pk}}/{{inbox.received.pk}}/new_sms"> Удалить</a></td>
+    </tr>
+</table>
+	{%endifequal%}
+	{%endfor%}
+</div>
+
+
+<div id="sent" hidden>
+	{%for inbox in sms_users%}
+	{%ifequal inbox.sender user%}
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<table class="coment_autor">
+    <tr>  
+	<td>
+		&nbsp;отправлено: 
+		<a href="/user/{{inbox.received.pk}}/">{{inbox.received}}</a>
+		 ({{inbox.date_sms}})&nbsp;&nbsp;
+		{%if inbox.received|user_online%}
+		<font color="#B91313">Онлайн</font>
+		{%endif%}
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td>
+	{%for adduser in add_user%}
+		{%ifequal adduser.add inbox.received%}
+	 		<img src="{{adduser.avatar.url}}" />
+		{%endifequal%}
+	{%endfor%}
+	</td>
+	<td class="coment_sms_td">{{inbox.sms}}</td>
+    </tr>
+</table>
+<table class="coment_autor" >
+    <tr>
+	<td>Дата регистрации: {{inbox.sender.date_joined}}</td>
+	<td class="menu_sms_red"><a href="/user/{{inbox.pk}}/{{inbox.sender.pk}}/del_sms"> Удалить</a></td>
+    </tr>
+</table>
+	{%endifequal%}
+	{%endfor%}
+</div>
+
+
+<form action="/user/{{users.pk}}/sms/" method="post">{% csrf_token %}
+<table class='user_sms' align="center">
+	<tr>
+		<td colspan='2'>
+			<b>Отправка персонального сообщения</b>
+		</td>
+	<tr>
+		<td><lable for="id_received">Получатель:</lable><br>
+		<a>{{error}}</a>
+		{%for error in form.received.errors %}
+			<a>{{error}}</a>
+		{%endfor%}</td>
+		<td>{{form.received}}</td>
+	</tr>
+	<tr>
+		<td><lable for="id_topic">Тема:</lable><br>
+		{%for error in form.topic.errors %}
+		<a>{{error}}</a>
+		{%endfor%}</td>
+		<td>{{form.topic}}</td>
+	</tr>
+	<tr>
+		<td colspan='2'>
+		{%for error in form.sms.errors %}
+		<center><a>{{error}}</a></center>
+		{%endfor%}
+		{{form.sms}}</td>
+	</tr>
+	<tr>
+		<td><input type="submit" name="personal" value="Отправить"></td>
+		<td><input type="reset" value="Отмена"></td>
+	</tr>
+</table>
+</form>
+{%endblock%}

@@ -1,0 +1,41 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+
+
+<div class="text">Обновление профиля пользователя</div>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<div class="text_adduser">Уважаемый посетитель Ваш аккаунт был зарегистрирован на нашем сайте, однако информация о вас является неполной, поэтому заполните дополнительные поля в вашем профиле.</div>
+<form enctype="multipart/form-data" method="post" action="/user/add/">
+    {% csrf_token %}
+<table class="profile_user">
+{% for field in form %}
+    <tr>
+		<th>{{ field.label_tag }}:</th>
+		<td>
+			<table>
+				<tr>
+					<td>{%for error in field.errors %}
+							<a>{{error}}</a>
+						{%endfor%}
+					</td>
+					<td id="help_text" rowspan="2">	
+						{{field.help_text}}
+					</td>
+				</tr>
+				<tr>
+					<td>{{ field }}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+<input type="submit" name="n" value="Сохранить">
+</form>
+{%endblock%}

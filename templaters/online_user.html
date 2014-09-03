@@ -1,0 +1,29 @@
+{%load filsms%}
+<table class="login_head">
+	<tr>
+		<td class="login login_top">
+			Кто на сайте
+		</td>
+	</tr>
+	<tr><td>
+			
+				<table class="hellow">
+					<tr><td>
+						<font size="1" color="gray">Всего <b>{{sum_count_user}}</b><br/>
+						Зарегистрированных пользователей в онлайне <b>{{count_user_online}}</b><br/>
+						Гостей <b>{{ guest_count }}</b></font><br/>
+					</td></tr>
+					<tr>
+						<td valign="bottom" align="left">
+				{%for user in count_users%}
+					{%if user|user_online%}
+							<a href="/user/{{user.pk}}/"><font color="black">{{user}}, </font></a>
+						
+						
+					{%endif%}
+				{%endfor%}
+					</td></tr></table>
+	<tr><td colspan="6">
+		<a class="login1 login_bottom"></a>
+	</td></tr>
+</table>

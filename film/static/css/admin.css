@@ -1,0 +1,126 @@
+.login_head{
+	padding:0px;
+	border-spacing:0;
+	margin: 0px;
+}
+
+.login {
+	width:150px;
+	height:30px;
+	text-align:center;
+	line-height:30px;
+	display: block;
+	text-decoration:none;
+}
+
+.login_top {
+	color:#444444;
+	background: #cccccc;
+	border: solid gray;
+	border-width: 1px 1px 0px 1px;
+	background-image:-webkit-linear-gradient(#fff,  silver, #cccccc);
+	background-image:-moz-linear-gradient(#fff,  silver, #cccccc);
+	background-image:-ms-linear-gradient(#fff,  silver, #cccccc);
+	background-image:-o-linear-gradient(#fff,  silver, #cccccc);
+	background-image:linear-gradient(#fff,  silver, #cccccc);
+	-webkit-border-radius:15px 15px 0 0;
+	-moz-border-radius:15px 15px 0 0;
+	border-radius:15px 15px 0 0;
+}
+	
+.login1 {
+	width:150px;
+	height:20px;
+	text-align:center;
+	color:#000;
+	line-height:15px;
+	display: block;
+	text-decoration:none;
+}
+.login_bottom{
+	border:solid gray;
+	border-width: 0px 1px 1px 1px;
+	background-image:-webkit-linear-gradient(#cccccc,silver,#fff);
+	background-image:-moz-linear-gradient(#cccccc,silver,#fff);
+	background-image:-ms-linear-gradient(#cccccc,silver,#fff);
+	background-image:-o-linear-gradient(#cccccc,silver,#fff);
+	background-image:linear-gradient(#cccccc,silver,#fff);
+	-webkit-border-radius:0 0 15px 15px;
+	-moz-border-radius:0 0 15px 15px;
+	border-radius:0 0 15px 15px;
+}
+
+.submit{
+	padding:1px;
+	margin: 2px;
+}
+table.log_pas{
+	border:solid gray;
+	border-width: 0px 1px 0px 1px;
+	width:152px;
+	padding:0px;
+	border-spacing:0;
+	margin: 0px;
+}
+.log_pas a{
+	color:red;
+	font-size:8px;
+}
+.log_pas td{
+	margin: 0px;
+	color:#4F4E4F;
+	background:#cccccc;
+	text-align:right;
+	font-size:9px;
+}
+.log_pas input[type="text"]{
+	width:66px;
+	font-size:9px;
+}
+.log_pas input[type="password"]{
+	width:66px;
+	font-size:9px;
+}
+.log_pas input[type="submit"]{
+	font-size:9px;
+}
+table.hellow{
+	border:solid gray;
+	border-width: 0px 1px 0px 1px;
+	font-size:11px;
+	width:152px;
+	padding:0px;
+	border-spacing:0;
+	margin: 0px;
+
+}
+.hellow td{
+	margin: 0px;
+	color:#4F4E4F;
+	background:#cccccc;
+
+}
+.hellow a{
+	text-align:center;
+	color:#4F4E4F;
+	text-decoration:none;
+	font-size:10px;
+}
+.hellow_user{
+	padding:0px;
+	border-spacing:0;
+	margin: 0px;
+	width:150px;
+	background:#cccccc;
+	font-size:10px;
+
+}
+.hellow_user td{
+	width:20px;
+	text-align:left;
+}
+.hellow_user a{
+	color:#000;
+	text-decoration:none;
+	font-size:10px;
+}

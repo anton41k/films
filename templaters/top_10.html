@@ -1,0 +1,25 @@
+{%load filsms%}
+{%load staticfiles%}
+<table class="login_head">
+	<tr>
+		<td class="login login_top">
+			TOP-10
+		</td>
+	</tr>
+	<tr><td>
+					<table class="hellow">
+				{%for film in top_10%}
+					{%if film.check_film%}
+						<tr><td>
+							<a href="/{{film.pk}}/"><img  src="{{film.poster.url}}" width="145"/></a>
+						</td></tr>
+						<tr><td valign="top">
+							<a href="/{{film.pk}}/">{{film.name}}</a>
+						</td></tr>
+					{%endif%}
+				{%endfor%}
+					</table>
+	<tr><td colspan="6">
+		<a class="login1 login_bottom"></a>
+	</td></tr>
+</table>

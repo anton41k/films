@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ru">
+<head>
+<meta content="text/html; charset=utf-8">
+	<title>{%block title%}{%endblock%}</title>
+<link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/rating.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/admin.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/clock.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.autocomplete.css" />
+
+		{%block style%}{%endblock%}
+
+<script type="text/javascript" src="/static/css/javascript/person_count.js"></script>
+<script type="text/javascript" src="/static/css/javascript/user_coment.js"></script>
+<script type="text/javascript" src="/static/css/javascript/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/css/javascript/jquery.js"></script>
+<script type="text/javascript" src="/static/css/javascript/jquery.autocomplete.min.js"></script>
+<script type="text/javascript" src="/static/css/javascript/clock.js"></script>
+<script type="text/javascript" src="/static/css/javascript/ajax.js"></script>
+    <script type='text/javascript' src='/static/css/javascript/jq/jquery.easing.1.2.js'></script>
+    <script type='text/javascript' src='/static/css/javascript/jq/jquery.circulate.js'></script>
+    <script type='text/javascript' src='/static/css/javascript/jq/example.js'></script>
+    
+<script type="text/javascript">
+   $(function() {
+      $("#test").click(function() {
+         $.get("/xhr_test/", function(data) {
+            alert(data);
+         });
+      });
+    });
+</script>
+<script type="text/javascript">
+   $(function() {
+      $("#proc").click(function() {
+         $.get("/xhr_proc/", function(data) {
+            alert(data);
+         });
+      });
+    });
+</script>
+
+<script type="text/javascript">
+   $(document).ready(function() {  
+       $("#q1").autocomplete("/search/");  
+    });  
+</script>
+
+
+</head>
+{%load staticfiles%}
+<body background="{%static "img/template-example-headline-bg.gif"%}">
+			
+
+		
+
+<table class="head" align="center"  background="{%static "img/template-example-bg.gif"%}">
+	<tr>
+		<td class="chb" colspan="3" height="175" width="800" id="ramka" bgcolor="#000">
+
+		<div id="outer_container">
+			<div id="thumbScroller">
+				<div class="container">
+					{%for post in posters%}
+					<div class="content">
+						<div>
+						<a href="/{{post.pk}}/">
+						<img  src="{{post.poster.url}}" class="thumb"/>
+						</a>
+						<img id="post" align="left" src="{%static "img/12.png"%}"/>
+						</div>
+					</div>
+					{%endfor%}
+		</div>
+			</div>
+				</div>
+		</td>
+	</tr>
+  <tr valign="top">
+    <td id="ramka">
+     {%include 'genre.html'%}
+		<br/>
+     {%include 'top_10.html'%}
+    </td>
+    <td class="new_sms">
+<centre><div class="container"><div class="clock">			
+				<ul>
+					<li id="Date"></li>
+					<li id="hours"></li>
+					<li id="point">:</li>
+					<li id="min"></li>
+					<li id="point">:</li>
+					<li id="sec"></li>
+				</ul>
+			</div></div></center>
+{%if user.is_superuser%}
+	{%if check_film%}
+	<a id="new" href="/new/movies/check/">У вас <b>{{check_film}}</b> {{check_film|pluralize:" не проверенная раздача!,не проверенных раздач!"}}</a><br>
+	{%endif%}
+{%endif%}
+{%if user.is_authenticated%}
+	{%if new_sms_count%}
+	<a id="new" href="/user/sms/">У вас <b>{{new_sms_count}}</b> {{new_sms_count|pluralize:" новое сообщение!,новых сообщений!"}}</a><br>
+	{%endif%}
+{%endif%}
+ 
+
+	<div class="a">
+
+<div id="ajax">{%include 'center.html'%}</div></div></td>
+    <td  id="ramka">
+{%include 'admin.html'%}
+<br/>
+{%include 'search_all.html'%}
+<br/>
+{%include 'best_commentator.html'%}
+<br/>
+{%include 'online_user.html'%}
+    </td>
+  </tr>
+  <tr align="center">
+    <td colspan="3" height="50" width="800" id="ramka">
+		<table>
+			<tr><td>
+<!-- Yandex.Metrika informer -->
+<a href="https://metrika.yandex.ru/stat/?id=25051022&amp;from=informer"
+target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/25051022/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:25051022,lang:'ru'});return false}catch(e){}"/></a>
+<!-- /Yandex.Metrika informer -->
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter25051022 = new Ya.Metrika({id:25051022,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/25051022" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+			</td></tr>
+			<tr><td>
+				<SCRIPT LANGUAGE="JavaScript">
+				<!-- Begin
+				document.write("<font size=1 color='gray'>Вы побывали здесь уже <b>" + amt() + "</b> раз(а).</font>")
+				// End -->
+				</SCRIPT>
+			</td></tr>
+		</table>
+	</td>
+  </tr>
+</table>
+
+</centre>
+<script type="text/javascript">
+$outer_container=$("#outer_container");
+$thumbScroller=$("#thumbScroller");
+$thumbScroller_container=$("#thumbScroller .container");
+$thumbScroller_content=$("#thumbScroller .content");
+$thumbScroller_thumb=$("#thumbScroller .thumb");
+ 
+var sliderWidth=$thumbScroller.width();
+var itemWidth=$thumbScroller_content.width();
+ 
+$thumbScroller_content.each(function (i) {
+    totalContent=i*itemWidth;   
+    $thumbScroller_container.css("width",totalContent+itemWidth);
+});
+ 
+$thumbScroller.mousemove(function(e){
+    var mouseCoords=(e.pageX - this.offsetLeft);
+      var mousePercentY=mouseCoords/sliderWidth;
+      var destY=-(((totalContent-(sliderWidth-itemWidth))-sliderWidth)*(mousePercentY));
+      var thePosA=mouseCoords-destY;
+      var thePosB=destY-mouseCoords;
+      if(mouseCoords==destY){
+        $thumbScroller_container.stop();
+      }
+      if(mouseCoords>destY){
+        $thumbScroller_container.css("left",-thePosA);
+      }
+      if(mouseCoords<destY){
+        $thumbScroller_container.css("left",thePosB);
+      }
+});
+ 
+var fadeSpeed=300;
+ 
+$thumbScroller_thumb.each(function () {
+    var $this=$(this);
+    $this.fadeTo(fadeSpeed, 0.5);
+});
+ 
+$thumbScroller_thumb.hover(
+    function(){ //mouse over
+        var $this=$(this);
+        $this.stop().fadeTo(fadeSpeed, 1);
+    },
+    function(){ //mouse out
+        var $this=$(this);
+        $this.stop().fadeTo(fadeSpeed, 0.5);
+    }
+);</script>
+
+</body>
+</html>
+

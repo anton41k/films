@@ -1,0 +1,24 @@
+.container {width: 200px; margin: 0;left:400px;text-align:center;}
+
+.clock {width:200px; margin:0 0 0 200px; padding:0px; color:#000;left:400px;}
+.clock:hover {width:200px; color:red;}
+#Date {text-align:center; font-family: Arial, Helvetica, sans-serif; font-size:8px;text-shadow:0 0 5px #fff; }
+
+ul {text-align:center; width:200px; margin:0px; padding:0px; list-style:none;  }
+ul li {text-align:center; display:inline; font-size:10px;  font-family:Arial, Helvetica, sans-serif; text-shadow:0 0 5px #fff; }
+
+#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:0px; padding-right:0px; text-shadow:0 0 5px #fff;}
+
+@-webkit-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 5px #000;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 5px #000; }    
+}
+
+@-moz-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 5px #000;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 5px #000; }    
+}

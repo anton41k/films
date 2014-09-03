@@ -1,0 +1,50 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+{%if user.coments_set.all%}
+{%for i in user.coments_set.all%}
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<table class="coment_autor">
+    <tr>  
+	<td>
+		<b>№{{forloop.counter}}</b>&nbsp;написал: 
+		<a href="/user/{{i.us.pk}}/">{{i.us}}</a>
+		 ({{i.date_coment}})
+		<a href="/{{i.coment.pk}}/">{{i.coment}}</a></td>
+	<td id="close">
+		<a href="/{{i.coment.pk}}/{{i.pk}}/del_coment/"><img src="{%static "img/close2.png"%}"align="right"/></a></td>
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td> 
+	{%for addus in adduserall%}
+	{%ifequal i.us addus.add%}
+		 <img src="{{addus.avatar.url}}" />
+	{%endifequal%}
+	{%endfor%}
+	</td>
+	<td class="coment_sms_td">{{i.message}}</td>
+    </tr>
+</table>
+<table class="coment_autor">
+    <tr>
+	<td>Дата регистрации: {{i.us.date_joined}}</td>
+    </tr>
+</table>
+
+{%endfor%}
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+{%else%}
+<br>
+<div class="text">Вы еще нигде не оставляли коментарии!!!</div>
+{%endif%}
+{%endblock%}

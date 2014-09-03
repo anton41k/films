@@ -1,0 +1,200 @@
+{%extends "base.html"%}
+{%block title%}
+{%if user.is_authenticated%}
+{{users}}
+{%else%}
+Гость
+{%endif%}
+{%endblock%}
+{%load filsms%}
+{%load staticfiles%}
+{%block content_center%}
+<div class="text">
+{%if user.is_authenticated%}
+{%ifequal user users%}
+Редактирование информации
+{%else%}
+Профиль пользователя
+{%endifequal%}
+{%else%}
+Профиль пользователя
+{%endif%}
+</div>
+<table class="user_detail">
+	<tr><th colspan="2">
+		<b><font size="2">Пользователь: {{users.username}}</font></b>
+	</th></tr>
+	<tr><td rowspan="15" valign="top">
+
+		<img src="{{adduser.avatar.url}}" />
+
+	</td></tr>
+	<tr><td>
+		<b>Имя:</b> {{users.first_name}}
+	</td></tr>
+	<tr><td>
+		<b>Фамилия:</b> {{users.last_name}}
+	</td></tr>
+	<tr><td>
+		<b>E-Mail адрес:</b> {{users.email}}
+	</td></tr>
+	<tr><td>
+		<b>Дата и время последнего посищения:</b> {{users.last_login}}
+	</td></tr>
+	<tr><td>
+		<b>Дата и время регистрации:</b> {{users.date_joined}}
+	</td></tr>
+	<tr><td>
+		<b>Статус: </b>
+{%if users|user_online%}
+<img id="status" src="{%static "img/on.png"%}" title="Online"/>
+{%else%}
+<img id="status" src="{%static "img/off.png"%}" title="Offline"/>
+{%endif%}
+	</td></tr>
+	<tr><td>
+		<b>Место жительства:</b> {{adduser.city}} 
+	</td></tr>
+	<tr><td>
+		<b>Номер ICQ:</b>  {%if adduser.ICQ%}{{adduser.ICQ}}{%endif%}
+	</td></tr>
+	<tr><td>
+		<b>Немного о себе:</b> {{adduser.about_me}}
+	</td></tr>
+	<tr><td>
+		<b>Количество раздач:</b> ({{new_count_film}}|{{count_film}})
+{%if count_film%}
+		<a onclick="newfilm()"><input type="image" src="{%static "img/down.png"%}"/></a> 
+		<a onclick="closnewfilm()"><input type="image" src="{%static "img/up.png"%}"/></a>
+{%endif%}
+{%ifequal user users%}
+<a href="/movies/check/">Перейти</a>
+{%endifequal%}
+<div id="newfilm" hidden>
+{%for film in list_film%}
+&nbsp;&nbsp;<a href="/{{film.pk}}/"><font color="#4f4e4e">{{film.name}} ({{film.date}}) {{film.quality}}</font></a><br/>
+{%empty%}
+&nbsp;&nbsp;<font color="#4f4e4e">Ожидается проверки!</font>
+{%endfor%}
+</div>
+
+	</td></tr>
+	<tr><td>
+		<b>Количество комментариев:</b> {{users.coments_set.count}}&nbsp;&nbsp;
+{%ifequal user users%} 
+{%if users.coments_set.count %} 
+		<font size="1">Последние комментарии</font>
+		<a onclick="showFormall()"><input type="image" src="{%static "img/down.png"%}"/></a> 
+		<a onclick="showall()"><input type="image" src="{%static "img/up.png"%}"/></a><br>
+{%endif%}
+	</td></tr>
+
+	<tr><td>
+		<b>Редактировать профиль</b>
+		<a onclick="redact_on()"><input type="image"  src="{%static "img/down.png"%}"/></a> 
+		<a onclick="redact_off()"><input type="image" src="{%static "img/up.png"%}"/></a>
+	</td></tr>
+	<tr><td>
+		<a href="/user/{{users.pk}}/sms/">Написать ПС</a>
+	</td></tr>
+{%endifequal%}
+</table> 
+
+<div id="authall" hidden>
+{%for i in users.coments_set.all%}
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<table class="coment_autor">
+    <tr>  
+	<td>
+		<b>№{{forloop.counter}}</b>&nbsp;написал: 
+		<a href="/user/{{i.us.pk}}/">{{i.us}}</a>
+		 ({{i.date_coment}})
+		<a href="/{{i.coment.pk}}/">{{i.coment}}</a></td>
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td> 
+	{%for addus in adduserall%}
+	{%ifequal i.us addus.add%}
+		 <img src="{{addus.avatar.url}}" />
+	{%endifequal%}
+	{%endfor%}
+	</td>
+	<td class="coment_sms_td">{{i.message}}</td>
+    </tr>
+</table>
+<table class="coment_autor">
+    <tr>
+	<td>Дата регистрации: {{i.us.date_joined}}</td>
+    </tr>
+</table>
+{%endfor%}
+</div>
+{%if form.errors%}
+	<div style="color:red;">
+	Исправте {{form.errors|pluralize:"следующую ошибку:, следующие ошибки:"}}</div>
+	<div id="profile">	
+{%else%}	
+	<div id="profile" hidden>
+{%endif%}
+<form action="" enctype="multipart/form-data" method="post">
+<table class="profile_user">
+{% for field in form %}
+    <tr>
+		<th>{{ field.label_tag }}:</th>
+		<td>
+			<table>
+				<tr>
+					<td>{%for error in field.errors %}
+							<a>{{error}}</a>
+						{%endfor%}
+					</td>
+					<td id="help_text" rowspan="2">	
+						{{field.help_text}}
+					</td>
+				</tr>
+				<tr>
+					<td>{{ field }}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+<table class="profile_user">
+{% for field in form_user %}
+    <tr>
+		<th>{{ field.label_tag }}:</th>
+		<td>
+			<table>
+				<tr>
+					<td>{%for error in field.errors %}
+							<a>{{error}}</a>
+						{%endfor%}
+					</td>
+					<td id="help_text" rowspan="2">	
+						{{field.help_text}}
+					</td>
+				</tr>
+				<tr>
+					<td>{{ field }}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+{% csrf_token %}
+<input type="submit" name="n" value="Сохранить">
+<input type="reset">
+</form>
+</div>
+{%endblock%}
+
+
+			

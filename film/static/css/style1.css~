@@ -1,0 +1,15 @@
+
+
+div#menu {margin:0; padding:0;width:184px; background:url(menu_1.gif) top no-repeat; padding-top:44px;}
+
+div#menubody {background:url(menu_2.gif) repeat-y; padding-left:21px;}
+
+div#menubottom {height:26px; background:url(menu_4.gif) bottom no-repeat;}
+
+ul#menulist {width:144px; list-style-type:none;}
+
+ul#menulist li {height:27px; background:url(menu_3.gif) bottom repeat-x;}
+
+ul#menulist a {width:122px; height:20px; border-left:#fff 10px solid; font:bold 10px Verdana, Arial, sans-serif; color:#ffffff; text-decoration:none; padding:5px 0 0 10px; display:block !important; display:inline-block;}
+
+ul#menulist a:hover {background:url(menu_5.jpg) left repeat-y;}

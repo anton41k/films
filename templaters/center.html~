@@ -1,0 +1,43 @@
+
+{%load staticfiles%}
+
+
+<form id="filter" action="" metod="get">{% csrf_token %}
+<table class="filter_all" width="606" >
+	<tr>
+		<td class="filter top_f">
+			Фильтр
+		</td>
+	</tr>
+	<tr><td>
+	<table class="filter_head" width="606">
+    		<tr>
+{% for field in form_filter %}
+		<td>
+			{{ field.label_tag }}{{ field }}
+		</td>
+{% endfor %}
+		<td>
+			<input  title="Поиск" onclick="search_all('filter','filter','film_fil_ter')" type="submit" value="Выбрать"/>
+		</td>
+	</tr>
+	</table>
+	<tr><td colspan="6">
+		<a class="filter_bottom bottom_f"></a>
+	</td></tr>
+</table>
+</form>
+<br/>
+<div id="film_fil_ter">
+
+
+
+
+
+{%include 'filter.html'%}
+
+</div>
+
+
+
+

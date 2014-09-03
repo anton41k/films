@@ -1,0 +1,15 @@
+
+{%load staticfiles%}
+<table class="field">	
+<tr><td>
+</td></tr>
+{%for genre in genres%}
+<tr><td background="{%static "img/a.png"%}"><img src="{%static "img/sm_arr1.gif"%}">
+<font size="1" color="#000000" face="sans-serif"><b><a href=/register/>{{genre}}</a></b></font>
+
+
+</td></tr>		
+	{%endfor%}
+</table>
+
+

@@ -1,0 +1,66 @@
+{%extends "base.html"%}
+{%block title%}{{user}}{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+<div class="menu_sms">
+	||<a href="/user/sms/"> Входящие сообщения</a> || 
+	<a href="/user/sms_sends/">Отправленные сообщения</a> || 
+	<a href="/user/{{user.pk}}/sms/">Отправить сообщение</a> ||
+</div><br>
+<div class="text">Входящие сообщения</div>
+<form action="/user/sms/" method="post">{% csrf_token %}
+<table class="enter_sms" align="center">
+	<tr><td width="15">
+		
+	</td>
+	<td width="150">
+		Тема сообщения
+	</td>
+	<td width="150">
+		Отправитель
+	</td>
+	<td width="150">
+		Дата
+	</td>
+	<td width="25">
+
+	</td></tr>
+{%for i in u_sms%}
+{%if i.lable%}
+	<tr><td>
+		<img src="{%static "img/read_sms.png"%}"/>
+{%else%}
+	<tr bgcolor=#D2D2FF><td>
+		<img src="{%static "img/sms.gif"%}"/>
+{%endif%}
+	</td>
+	<td>
+{%if i.lable%}
+		<a href="/user/{{i.pk}}/new_sms/" title="{{i.sms}}">{{i.topic}}</a>
+{%else%}
+		<b><a href="/user/{{i.pk}}/new_sms/" title="{{i.sms}}">{{i.topic}}</a></b>
+{%endif%}
+	</td>
+	<td>
+		<a href="/user/{{i.sender.pk}}/">{{i.sender}}</a>
+	</td>
+	<td>
+		{{i.date_sms}}
+	</td>
+	<td>
+		<input type="checkbox" name="id" id="id{{ forloop.counter }}" value="{{ i.id }}" />
+    			<label for="id{{ forloop.counter }}">
+	</td></tr>
+{%endfor%}
+	<tr><td colspan="5">
+		<div class="action_sms">
+			{{form.action_sms}}
+			<input type="submit"  value="Выполнить"/>
+    		</div>
+	</td></tr>
+</table>	
+
+</form>
+
+{%endblock%}

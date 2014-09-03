@@ -1,0 +1,100 @@
+*{
+    margin:0;
+    padding:0;
+    behavior: url(ie-css3.htc)
+    }
+
+body{
+    background-color:#fff
+    }
+
+#nav_menu_css{
+    border:#aaa 1px solid;
+    margin-left:100px;
+    width:240px;
+    border-radius:8px;
+    box-shadow:0 0 5px #666
+    }
+
+#nav_menu_css a{
+    color:#565656;
+    display:block;
+    font:12px/1.18 georgia,arial,helvetica,serif;
+    margin-top:3px;
+    padding:0 3px 3px 10px;
+    position:relative;
+    text-decoration:none
+    }
+
+#nav_menu_css a:hover{
+    color:#c50
+    }
+
+#nav_menu_css li{
+    cursor:pointer;
+    font:bold 12px/1.18 georgia,arial,helvetica,serif;
+    list-style-type:none;
+    padding:0
+    }
+
+#nav_menu_css li span{
+    display:block;
+    height:25px;
+    padding:5px 3px 0 20px;
+    border-bottom:1px solid #4100FF;
+    background:#FF5300;
+    margin-bottom:2px
+    }
+
+#nav_menu_css li:first-child >span{
+    border-top-left-radius:8px;
+    border-top-right-radius:8px
+    }
+
+#nav_menu_css li:last-child >span{
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px;
+    margin-bottom:-2px
+    }
+
+#nav_menu_css li ul{
+    border:#eee 3px solid;
+    display:none;
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px
+    }
+
+#nav_menu_css li li{
+    cursor:pointer;
+    margin:2px;
+    padding:1px;
+    border-bottom:1px dashed #FF6B00
+    }
+
+#nav_menu_css li:hover:first-child>span{
+    background:#FF8100;
+    color:#905;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px
+    }
+
+#nav_menu_css li li:hover{
+    background:#FFD6AE;
+    color:#905;
+    border-bottom:1px dashed #FF6B00
+    }
+
+#nav_menu_css li span:hover{
+    background:#FF8100;
+    color:#905
+    }
+
+#nav_menu_css li:hover ul{
+    background:#fff;
+    display:block
+    }
+
+#nav_menu_css li:hover ul{
+    margin:0;
+    padding:1px
+    }

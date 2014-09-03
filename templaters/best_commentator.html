@@ -1,0 +1,28 @@
+{%load filsms%}
+{%load staticfiles%}
+<table class="login_head">
+	<tr>
+		<td class="login login_top">
+			<font size="2">Лучший коментатор</font>
+		</td>
+	</tr>
+	<tr><td>
+					<table class="hellow">
+				{%for user in all_user%}
+					{%if user.coments_set.all|length%}
+					<tr><td rowspan="2">
+						<a href="/user/{{user.pk}}/"><img width="30" src="{{user|user_avatar}}" /></a>
+						</td>
+						<td valign="bottom" align="left">
+							<a href="/user/{{user.pk}}/"><font color="black">{{user}}</font></a>
+						</td></tr>
+						<tr><td valign="top" align="left">
+							Коментариев: {{user.coments_set.all|length}}
+						</td></tr>
+					{%endif%}
+				{%endfor%}
+					</table>
+	<tr><td colspan="6">
+		<a class="login1 login_bottom"></a>
+	</td></tr>
+</table>

@@ -1,0 +1,204 @@
+# -*- coding: utf-8 -*-
+from django import forms
+from film.models import *
+from django.contrib import auth
+from django.contrib.auth.models import User
+from django.contrib import auth
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=30,label=u'Логин или e-mail')
+    password = forms.CharField(max_length=15,min_length=6,label=u'Пароль', widget=forms.PasswordInput())
+    error_css_class = 'error_log'
+    def clean_username(self):
+        data=self.cleaned_data
+        if '@' in data['username']:
+            email1=data['username']
+            try:
+                user_obj = User.objects.get(email=email1)
+            except User.DoesNotExist:
+                raise forms.ValidationError(u'Вы неправильно ввели e-mail')
+        else:
+            try:
+                user_obj = User.objects.get(username=data['username'])
+            except User.DoesNotExist:
+                raise forms.ValidationError(u'Вы неправильно ввели логин')          
+        return data['username']
+
+class RegistrationForm(forms.Form):
+    username1 = forms.CharField(max_length=30,label=u'Имя пользователя',help_text='Обязательное поле. Введите 30 символов или менее. Используйте только буквы, цифры и знаки из набора @/./+/-/_ ')
+    email=forms.EmailField(label=u'Ваш e-mail',required=False,help_text='Не обязательно')
+    password1 = forms.CharField(max_length=15,min_length=6,label=u'Пароль',help_text='Не менее 6 символов', widget=forms.PasswordInput)
+    password2 = forms.CharField(max_length=15,min_length=6,label=u'Повторите пароль', widget=forms.PasswordInput)
+
+    def clean_password2(self):
+        if ( self.cleaned_data["password2"] != self.cleaned_data.get( "password1", "") ):
+			raise forms.ValidationError( "Пароли не совпадают" )
+        return self.cleaned_data["password2"]
+
+    def clean_email(self):
+        f=self.cleaned_data['email']
+        if f:
+            try:
+                user_obj = User.objects.get(email=f)
+            except User.DoesNotExist:
+                pass
+            else:
+                raise forms.ValidationError(u'Пользователь с таким e-mail уже зарегистрирован!')
+        return f
+
+class ComentForm(forms.Form):
+	coment=forms.CharField(widget=forms.Textarea(attrs={'id':'coment_js',}),label=u'Оставить коментарий')
+
+from django.forms import ModelForm
+class FilmsForm(ModelForm):
+	def clean_studio_country(self):
+		try:
+			stud_country=self.cleaned_data['studio_country']
+		except:
+			pass
+	class Meta:
+		model=Films
+		exclude=['autor','date_film','coment_count','ratings_film','count']
+
+class ScreensForm(ModelForm):
+	class Meta:
+		model=Screens
+		fields = ['screen']
+			
+	
+
+class SuperUserForm(ModelForm):
+	error_css_class = 'error'
+	required_css_class = 'required'
+	class Meta:
+		model=User
+
+class UserForm(ModelForm):
+	error_css_class = 'error'
+	required_css_class = 'required'
+	class Meta:
+		model=User
+		fields = ['first_name', 'last_name', 'email']
+
+class SmsForm(ModelForm):
+	received=forms.CharField(max_length=30)
+	def clean_received(self):
+		data=self.cleaned_data
+		try:
+			user=User.objects.get(username=data['received'])
+		except User.DoesNotExist:
+			raise forms.ValidationError(u'Пользователя с таким логином не существует!')
+		return user
+	class Meta:
+		model=SmsUser
+		fields = ['received', 'topic', 'sms']
+
+class AddForm(ModelForm):
+	about_me = forms.CharField(required=False,label=u'Немного о себе',widget=forms.Textarea(attrs={'cols':'30','rows':'5'}))
+	class Meta:
+		model=AddUser
+		fields = ['city', 'ICQ','avatar' ,'about_me']
+
+sms=((u'--Действие--',(
+					('del',u'Удалить'),
+					('delall',u'Удалить все'),
+					('mark',u'Пометить как прочитаное'),
+					('uncheck',u'Снять отметку о прочтении'),
+					)
+	),)
+
+class ActionsOnSms(forms.Form):
+	action_sms=forms.ChoiceField(choices=sms,widget=forms.Select(attrs={'size':'1'}))
+
+sms_sub=((u'--Действие--',(
+					('del',u'Удалить'),
+					('delall',u'Удалить все'),
+					)
+	),)
+class SubmittedOnSms(forms.Form):
+	action_sms=forms.ChoiceField(choices=sms_sub)
+
+r=(
+					('1','1'),
+					('2','2'),
+					('3','3'),
+					('4','4'),
+					('5','5'),
+)
+class RatingForm(ModelForm):
+	rating=forms.ChoiceField(widget=forms.RadioSelect(attrs={'onchange':'this.form.submit()'}),choices=r)
+	class Meta:
+		model=Rating
+		fields = ['rating']
+
+class SearchForm(forms.Form):
+	ch_search=(
+		('all_word',u'Все слова'),
+		('any_word',u'Любое из слов'),
+		)
+	search=forms.ChoiceField(label=u'Искать',choices=ch_search,widget=forms.Select(attrs={'size':'1'}))
+	genre_search=forms.ModelChoiceField(label=u'В жанре',queryset=Genres.objects.all(),widget=forms.Select(attrs={'size':'1'}),empty_label="Любом")
+	ch_where_search=(
+		('name',u'В названии'),
+		('producer',u'В режиссерах'),
+		('cast',u'В актерах'),
+		)
+	where_search=forms.ChoiceField(label=u'Где искать',choices=ch_where_search,widget=forms.Select(attrs={'size':'1'}))
+	year=[('all','Любой')]
+	for i in Films.objects.all():
+		if (i.date,i.date) not in year:	
+			year.append((i.date,i.date))
+	year_search=forms.ChoiceField(label=u'Год выхода',choices=year,widget=forms.Select(attrs={'size':'1'}))
+	ch_during_the_creation=(
+		('all',u'Все время'),
+		('now',u'Сегодня'),
+		('3_day',u'3 Дня'),
+		('week',u'Неделю'),
+		('month',u'Месяц'),
+		('3_month',u'3 Месяца'),
+		('6_month',u'Пол года'),
+		('year',u'Год'),
+		)
+	during_the_creation=forms.ChoiceField(label=u'За время создания',choices=ch_during_the_creation,widget=forms.Select(attrs={'size':'1'}))
+	ch_sort_search=(
+		('add_date',u'Добавлен'),
+		('review',u'Просмотры'),
+		('coments',u'Коментарии'),
+		('rating',u'Рейтинг'),
+		)
+	sort_search=forms.ChoiceField(label=u'Сортировать по',choices=ch_sort_search,widget=forms.Select(attrs={'size':'1'}))
+	ch_sort=(
+		('down',u'Убыв.'),
+		('up',u'Возр.'),
+		)
+	sort=forms.ChoiceField(label='',choices=ch_sort,widget=forms.Select(attrs={'size':'1'}))
+
+class AdvancedSearchForm(forms.Form):
+	advanced_search=forms.CharField(max_length=50,label='',widget=forms.TextInput(attrs={'size':60,'style':"vertical-align: 50px"}))
+
+class FilterForm(forms.Form):
+	genre_search=forms.ModelChoiceField(label='',queryset=Genres.objects.all(),widget=forms.Select(attrs={'size':'1'}),empty_label="В жанре")
+	year=[('all','Год выхода')]
+	for i in Films.objects.all():
+		if (i.date,i.date) not in year:	
+			year.append((i.date,i.date))
+	year_search=forms.ChoiceField(label='',choices=year,widget=forms.Select(attrs={'size':'1'}))
+	format_film=[('all','Формат'),]
+	for i in Films.objects.all():
+		if (i.quality,i.quality) not in format_film:	
+			format_film.append((i.quality,i.quality))
+	format_film_search=forms.ChoiceField(label='',choices=format_film,widget=forms.Select(attrs={'size':'1'}))
+	ch_sort_search=(
+		('add_date',u'Добавлен'),
+		('review',u'Просмотры'),
+		('coments',u'Коментарии'),
+		('rating',u'Рейтинг'),
+		)
+	sort_search=forms.ChoiceField(label='Сортировать по:',choices=ch_sort_search,widget=forms.Select(attrs={'size':'1'}))
+	ch_sort=(
+		('down',u'Убыв.'),
+		('up',u'Возр.'),
+		)
+	sort=forms.ChoiceField(label='',choices=ch_sort,widget=forms.Select(attrs={'size':'1'}))
+
+

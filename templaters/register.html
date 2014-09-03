@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация пользователя{% endblock %}
+{%block style%}
+<style type="text/css">
+.field1  {
+	color: red;
+}
+.field1 a{
+	color: red;
+	font-size: 10px;
+
+}</style>{%endblock%}
+{% block content_center %}
+{%load staticfiles%}
+<br><br>
+<div class="text">Регистрация пользователя</div>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+<form action="/register/" method="POST">
+    {% csrf_token %}
+<table class="profile_user">
+{% for field in form %}
+    <tr>
+		<th>{{ field.label_tag }}:</th>
+		<td>
+			<table>
+				<tr>
+					<td>{%for error in field.errors %}
+							<a>{{error}}</a>
+						{%endfor%}
+					</td>
+					<td id="help_text" rowspan="2">	
+						{{field.help_text}}
+					</td>
+				</tr>
+				<tr>
+					<td>{{ field }}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+{% endfor %}
+</table>
+<input type="submit"  value="Зарегистрировать"/>
+</form>
+{% endblock %}
+
+  

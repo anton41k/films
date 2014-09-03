@@ -1,0 +1,25 @@
+{%extends "base.html"%}
+{%block title%}Расширеный поиск{%endblock%}
+
+{%load staticfiles%}
+{%block content_center%}
+<table>
+	<tr align="left">
+<form action="/search/" metod="get">{% csrf_token %}
+	<td width="200"><input type="text" name="search" size="20"/></td>
+	<td><input  title="Поиск" type="submit" value="Искать"/></td>
+	</tr>
+	<tr><td colspan="2">
+<table class="advanced_search" >
+    <tr>
+{% for field in form_seaech %}
+
+		<td>{{ field.label_tag }}<br>
+			{{ field }}
+		</td>
+{% endfor %}
+	</tr>
+</table>
+</form>
+</td></tr></table>
+{%endblock%}

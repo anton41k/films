@@ -1,0 +1,151 @@
+{%extends "base.html"%}
+{%block title%}Фильмы{%endblock%}
+{%load staticfiles%}
+
+{%block content_center%}
+
+<table id="ramka"><tr><td>
+<br/>
+{%if user.is_superuser%}
+<a href="/addfilm/{{film.pk}}/"><img align="right" width="25" src="{%static "img/redact.png"%}" title="Редактировать"/></a>
+{%endif%}
+{%ifequal user film.autor%}
+{%if not user.is_superuser and not film.check_film%}
+<a href="/addfilm/{{film.pk}}/"><img align="right" width="25" src="{%static "img/redact.png"%}" title="Редактировать"/></a>
+{%endif%}
+{%endifequal%}
+<div class="name_film_download">
+	<a>Фильм {{film.name}} ({{film.date}}) {{film.quality}} бесплатно</a>
+</div>
+<div class="category_small">
+	Категория:&nbsp;<a href="/">Главная</a>,&nbsp;
+{%for i in film.genre.all%}
+	<a href="/genre/{{i.pk}}/">{{i.name_genre}}</a>,&nbsp;
+{%endfor%}
+	| Просмотров: {{film.count}}
+</div>
+
+	<table class="line"><tr><td background="{%static "img/linee.gif"%}">&nbsp;</td></tr></table>
+
+<div class="img1">
+	<img src="{{film.poster.url}}" />
+</div><br>
+	<img src="{%static "img/5.gif"%}" />
+<div class="detail_film">
+	<b>Фильм: </b>{{film.name}}<br>
+	<b>Оригинальное название: </b>{{film.orig_name}}<br>
+	<b>Год выхода: </b>{{film.date}}<br>
+	<b>Студия/Страна: </b>{{film.studio_country}}<br>
+	<b>Жанр: </b>
+ {%for i in film.genre.all%}{{i.name_genre}}&nbsp;{%endfor%}<br>
+	<b>Режиссер: </b>{{film.producer}}<br>
+	<b>В ролях: </b>{{film.cast}}<br>
+	<b>Продолжительность: </b>{{film.duration}}<br>
+	<b>Перевод: </b>{{film.translation}}<br>
+	<b>Качество: </b>{{film.quality}}<br>
+	<b>Размер: </b>{{film.size}}<br>
+	<div class="detail_img">
+		<img src="{%static "img/96.gif"%}"/><br>{{film.detail}}<br><br>
+	</div>
+<a class="detail_kinopoisk" href='http://www.kinopoisk.ru/film/{{film.kinopoisk}}/'><img src='http://rating.kinopoisk.ru/{{film.kinopoisk}}.gif' border='0' align="left"></a><br><br>
+	<br><br><b>Скрины: </b><br>{%for i in film.screen.all%}<img src="{{i.screen.url}}" />{%endfor%}<br><br>
+	<b>Скачать: </b><a href="{{film.down_load}}">Ссылка</a><br><br>
+</div>
+{%load filsms%}
+<table class="time">
+	<tr><td width=87>
+		{%include 'rez_rating.html'%}
+	</td>
+	<td> 
+		[{{film.ratings_film}}({{count_rating}})]
+	</td>
+	<td>
+		&nbsp;<b>{{film.date_film}}</b> | автор: <a href="/user/{{film.autor.pk}}/">{{film.autor}}</a> | Просмотров: {{film.count}}
+	</td></tr>
+</table>
+<br/>
+</td></tr></table>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+{%if film.check_film%}
+{%for i in film.coments_set.all%}
+<table class="coment_autor">
+    <tr>  
+	<td><b>№{{forloop.counter}}</b>&nbsp;написал: <a href="/user/{{i.us.pk}}/">{{i.us}}</a> ({{i.date_coment}})&nbsp;&nbsp;
+		{%if i.us|user_online%}
+		<font color="#B91313">Онлайн</font>
+		{%endif%}</td>
+{%ifequal user i.us%}
+	<td id="close"><a href="/{{film.pk}}/{{i.pk}}/del_coment/"><img src="{%static "img/close2.png"%}"align="right"/></a></td>
+{%endifequal%}
+    </tr>
+</table>
+<table class="coment_sms">
+    <tr>
+	<td>
+	{%for addus in adduser%}
+	{%ifequal i.us addus.add%}
+		 <img src="{{addus.avatar.url}}" />
+	{%endifequal%}
+	{%endfor%}</td>
+	<td class="coment_sms_td">
+		{%if i.answer%}
+			<table class="answer">
+				<tr><th>Ответ на комент: {{i.answer_user}}</th></tr>
+				<tr><td>{{i.answer}}</td></tr>
+			</table>
+		{%endif%}
+		{{i.message}}
+	</td>
+    </tr>
+</table>
+<table class="coment_autor" >
+    <tr>
+	<td>Дата регистрации: {{i.us.date_joined}}</td>
+{%if user.is_authenticated%}
+{%ifnotequal user i.us%}
+	<td class="menu_sms"><a onclick="answer('2_{{i.pk}}')"> Ответить</a></td>
+{%endifnotequal%}
+{%endif%}
+    </tr>
+</table>
+<div id='2_{{i.pk}}' hidden>
+
+	<form action="/{{film.pk}}/{{i.pk}}/" method="POST">    {% csrf_token %}
+	<div class="field">
+		{{form.coment}}
+		<img src="{%static "img/close.png"%}" onclick="reset('2_{{i.pk}}')"/>
+	</div>
+	<input type="submit" value="Ответить"/>
+	
+</form>
+</div>
+<table class="line">
+	<tr><td background="{%static "img/linee.gif"%}">&nbsp;
+	</td></tr>
+</table>
+{%endfor%}
+
+{%if user.is_authenticated%}
+<form action="/{{film.pk}}/coment/" method="POST">    {% csrf_token %}
+	<div class="field">
+		<lable for="coment">Оставить коментарий:</lable><br>
+		{{form.coment}}
+	</div>
+    <input type="submit" value="Отправить"/>
+</form>
+{%else%}
+<table class="war_reg">
+	<tr><td>
+		<img src="{%static "img/alert.png"%}"/>
+	</td>
+	<td>
+		Посетители, находящиеся в группе <b>Гости</b>, не могут оставлять комментарии к данной публикации.
+	</td></tr>
+</table>
+{%endif%}
+{%endif%}
+{%endblock%}
+		
