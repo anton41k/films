@@ -23,27 +23,7 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 
-def xhr_test(request):
-    if request.is_ajax():
-        message = "Hello AJAX!"
-    else:
-        message = "Hello"
-    return HttpResponse(message)
 
-def proc(request):
-	if request.is_ajax():
-		if request.user.is_authenticated():
-			try:
-				counts=AddUser.objects.get(add=request.user)
-				new_sms_counts=counts.user_sms.filter(received=request.user,lable=False).count()
-				message1 = "У вас %s новое сообщение!" % new_sms_counts
-				message = message1
-			except AddUser.DoesNotExist:
-				message = "ERROR"
-		else:message = "ERROR1"
-	else:
-		message = "ERROR????"
-	return HttpResponse(message)
 
 from django.db.models import Count
 def film(request,genre_pk=None):
